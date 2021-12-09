@@ -1,24 +1,12 @@
 showProduct();
 
-/* async function result(){
-     await fetch("http://localhost:3000/api/products")
-    .then(function(res){
-        if (res.ok){
-            return res.json();
-        }
-    })
-    .then(function(value){
-        console.log(value);
-    })
-    .catch(function(err){
-        console.log('Erreur:' + err);
-    });}*/
-
+//Récupération des infos de l'API
 async function result() {
         var productsArray = await fetch("http://localhost:3000/api/products")
         return await productsArray.json();
     }
 
+//Intégration des résultats dans le DOM
 async function showProduct(){
     var results = await result()
         .then(function (apiResults){
