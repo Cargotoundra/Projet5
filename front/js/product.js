@@ -70,8 +70,7 @@ function addPanier (products){
     
 
         //Si la quantité n'est pas égale à 0 alors
-        if (quantityAddProduct.value > 0 && quantityAddProduct.value <=100){
-                let ourLocalStorage = JSON.parse(localStorage.getItem("article"));
+        if (quantityAddProduct.value > 0 && quantityAddProduct.value <=100 && colorAddProduct.value !=""){
                 let detailsArticle = {
                     idArticle: id,
                     colorArticle: colorAddProduct.value,
@@ -82,6 +81,7 @@ function addPanier (products){
                     imgArticle: products.imageUrl,
                     altImgArticle: products.altTxt
                 };
+                let ourLocalStorage = JSON.parse(localStorage.getItem("article"));
                 ourLocalStorage =[];
                 ourLocalStorage.push(detailsArticle);
                 //On pousse les données en JSON ds le localstorage
