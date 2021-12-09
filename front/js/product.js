@@ -3,7 +3,11 @@ let params = (new URL(document.location)).searchParams;
 let id = params.get('id');
 console.log(id);
 
+const colorAddProduct = document.getElementById("colors");
+const quantityAddProduct = document.getElementById("quantity");
+
 seeProduct();
+
 
 //Récupération des info du produit ayant l'id = id
 function seeProduct() {
@@ -54,4 +58,37 @@ function getInDom(products){
                     productColors.value = colors;
                     productColors.innerHTML = colors;
                 }
+                click(products);
             }
+
+function click (products){
+    const addCart = document.getElementById('addToCart');
+    addCart.addEventListener('click', addPanier);
+}
+
+function addPanier (products){
+    
+
+        //Si la quantité n'est pas égale à 0 alors
+        if (quantityAddProduct.value > 0 && quantityAddProduct.value <=100){
+                let ourLocalStorage = JSON.parse(localStorage.getItem("article"));
+                let detailsArticle = {
+                    idArticle: id,
+                    colorArticle: colorAddProduct.value,
+                    quantityArticle: Number(quantityAddProduct.value),
+                    nameArticle: products.name,
+                    priceArticle: products.price,
+                    descriptionArticle: products.description,
+                    imgArticle: products.imageUrl,
+                    altImgArticle: products.altTxt
+                };
+                ourLocalStorage =[];
+                ourLocalStorage.push(detailsArticle);
+                //On pousse les données en JSON ds le localstorage
+                localStorage.setItem("article", JSON.stringify(ourLocalStorage));
+                console.table(ourLocalStorage);
+                console.log(ourLocalStorage);}
+        else {
+            console.log('Erreur de quantité');
+        }}
+
