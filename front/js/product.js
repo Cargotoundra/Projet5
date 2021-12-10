@@ -19,7 +19,7 @@ function seeProduct() {
     .then(async function (resultatAPI) {
         products = await resultatAPI;
         console.table(products);
-            //lancement de la fonction getInDom
+            //lancement de la fonction getInDom (Mise en page)
             getInDom(products);
     })
     .catch(function(err){
@@ -61,34 +61,52 @@ function getInDom(products){
                 click(products);
             }
 
+//Au clic sur le btn
 function click (products){
     const addCart = document.getElementById('addToCart');
     addCart.addEventListener('click', addPanier);
 }
 
 function addPanier (products){
-    
-
         //Si la quantité n'est pas égale à 0 alors
         if (quantityAddProduct.value > 0 && quantityAddProduct.value <=100 && colorAddProduct.value !=""){
+                //Création des données à exporter
                 let detailsArticle = {
                     idArticle: id,
                     colorArticle: colorAddProduct.value,
                     quantityArticle: Number(quantityAddProduct.value),
-                    nameArticle: products.name,
-                    priceArticle: products.price,
-                    descriptionArticle: products.description,
-                    imgArticle: products.imageUrl,
-                    altImgArticle: products.altTxt
+                    nameArticle: (document.getElementById('title')).innerText, 
+                    priceArticle: (document.getElementById('price')).innerText,
+                    descriptionArticle: (document.getElementById('description')).innerText,
+                    imgArticle: (document.querySelector('.item__img img')).src,
+                    altImgArticle: (document.querySelector('.item__img img')).alt,
                 };
+                //Création espace de stockage
                 let ourLocalStorage = JSON.parse(localStorage.getItem("article"));
-                ourLocalStorage =[];
-                ourLocalStorage.push(detailsArticle);
-                //On pousse les données en JSON ds le localstorage
-                localStorage.setItem("article", JSON.stringify(ourLocalStorage));
-                console.table(ourLocalStorage);
-                console.log(ourLocalStorage);}
-        else {
-            console.log('Erreur de quantité');
-        }}
+
+                    if (ourLocalStorage){
+                        const cartNotEmpty = ourLocalStorage.find((article) => article.idArticle === id && article.colorArticle === (colorAddProduct.value));
+                            //Si l'article ds le panier = nouvel article
+                            if (cartNotEmpty){
+                                let addQuantity = (detailsArticle.quantityArticle) + (cartNotEmpty.quantityArticle);
+                                cartNotEmpty.quantityArticle = addQuantity;
+                                localStorage.setItem("article", JSON.stringify(ourLocalStorage));
+                                console.table(ourLocalStorage);
+                            }
+                            else {
+                                ourLocalStorage.push(detailsArticle);
+                                localStorage.setItem("article", JSON.stringify(ourLocalStorage));
+                                console.table(ourLocalStorage);
+                            }
+                        //Si aucun article ds le panier
+                        } else {
+                            ourLocalStorage =[];
+                            ourLocalStorage.push(detailsArticle);
+                            //On pousse les données en JSON ds le localstorage
+                            localStorage.setItem("article", JSON.stringify(ourLocalStorage));
+                            console.table(ourLocalStorage);
+                    }
+                    } else {
+                        console.log('Erreur de quantité');
+                    }}
 
