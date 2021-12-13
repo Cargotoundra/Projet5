@@ -3,6 +3,8 @@ var viewCart = JSON.parse(localStorage.getItem("article"));
 console.table(viewCart);
 
 getInDom();
+totalQte();
+totalPrice();
 
 function getInDom(){
     for (let article in viewCart){
@@ -24,7 +26,6 @@ function getInDom(){
         div.appendChild(newImgHTML);
         newImgHTML.src = viewCart[article].imgArticle;
         newImgHTML.alt = viewCart[article].altImgArticle;
-        //console.log(newImgHTML);
 
         //création de la div2
         let div2 = document.createElement('div');
@@ -64,7 +65,7 @@ function getInDom(){
         //création de la quantité
         let qte = document.createElement('p');
         divQ.appendChild(qte);
-        price.innerText = 'Qté : ';
+        qte.innerText = 'Qté : ';
 
         //insertion value
         let value = document.createElement('input');
@@ -81,6 +82,40 @@ function getInDom(){
         divS.appendChild(divDelete);
         divQ.classList.add('cart__item__content__settings__delete');
 
+        //création du pDelete
+        let pDelete = document.createElement('p');
+        divDelete.appendChild(pDelete);
+        divDelete.classList.add('deleteItem');
+        divDelete.innerText = 'Supprimer';
 
-    }
+    }}
+
+function totalQte(){
+
+    //création total quantité
+    let totalQte = document.getElementById('totalQuantity');
+    let quantityTotal = document.querySelectorAll('.itemQuantity');
+    let qte = 0;
+    //additionne chaque valeur présente dans une div ayant pour class 'itemQuantity
+    quantityTotal.forEach(e => {qte += Number(e.value);} )
+    console.log(qte);
+    return totalQte.innerText = qte;
 }
+
+function totalPrice() {
+
+    let totalPrice = document.getElementById('totalPrice');
+    let quantityTotal = document.querySelectorAll('.itemQuantity');
+    let price = 0;
+
+    //additionne chaque quantité par son prix
+     for (var i = 0; i < (quantityTotal.length); ++i) {
+        price += (quantityTotal[i].valueAsNumber * viewCart[i].priceArticle);
+    }
+    console.log(price);
+    return totalPrice.innerText = price;
+}
+        
+
+
+    
