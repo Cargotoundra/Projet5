@@ -49,7 +49,7 @@ function getInDom(products){
                 let ProductP = document.getElementById('description');
                 ProductP.innerHTML = products.description;
 
-                //Ajout des options
+                //Ajout des options colors
                 for (let colors of products.colors){
                     console.table(colors);
                     let productColors = document.createElement("option");
@@ -86,7 +86,7 @@ function addPanier (products){
 
                     if (ourLocalStorage){
                         const cartNotEmpty = ourLocalStorage.find((article) => article.idArticle === id && article.colorArticle === (colorAddProduct.value));
-                            //Si l'article ds le panier = nouvel article alors on change juste la quantité
+                            //Si l'article ds le panier == nouvel article alors on change juste la quantité
                             if (cartNotEmpty){
                                 let addQuantity = (detailsArticle.quantityArticle) + (cartNotEmpty.quantityArticle);
                                 cartNotEmpty.quantityArticle = addQuantity;
@@ -99,7 +99,7 @@ function addPanier (products){
                                 localStorage.setItem("article", JSON.stringify(ourLocalStorage));
                                 console.table(ourLocalStorage);
                             }
-                        //Si aucun article ds le panier
+                        //Si aucun article ds le panier (étape 1 de base)
                         } else {
                             //Création d'un tableau de la local storage
                             ourLocalStorage =[];
