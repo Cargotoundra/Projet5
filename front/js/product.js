@@ -86,13 +86,14 @@ function addPanier (products){
 
                     if (ourLocalStorage){
                         const cartNotEmpty = ourLocalStorage.find((article) => article.idArticle === id && article.colorArticle === (colorAddProduct.value));
-                            //Si l'article ds le panier = nouvel article
+                            //Si l'article ds le panier = nouvel article alors on change juste la quantité
                             if (cartNotEmpty){
                                 let addQuantity = (detailsArticle.quantityArticle) + (cartNotEmpty.quantityArticle);
                                 cartNotEmpty.quantityArticle = addQuantity;
                                 localStorage.setItem("article", JSON.stringify(ourLocalStorage));
                                 console.table(ourLocalStorage);
                             }
+                            // Sinon ajout d'un nouvel article ds le panier
                             else {
                                 ourLocalStorage.push(detailsArticle);
                                 localStorage.setItem("article", JSON.stringify(ourLocalStorage));
@@ -100,9 +101,10 @@ function addPanier (products){
                             }
                         //Si aucun article ds le panier
                         } else {
+                            //Création d'un tableau de la local storage
                             ourLocalStorage =[];
                             ourLocalStorage.push(detailsArticle);
-                            //On pousse les données en JSON ds le localstorage
+                            //On pousse les données en JSON ds le localstorage en chaine de caractère
                             localStorage.setItem("article", JSON.stringify(ourLocalStorage));
                             console.table(ourLocalStorage);
                     }
