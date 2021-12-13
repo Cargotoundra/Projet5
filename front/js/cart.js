@@ -2,6 +2,8 @@
 var viewCart = JSON.parse(localStorage.getItem("article"));
 console.table(viewCart);
 
+let quantityTotal = document.querySelectorAll('.itemQuantity');
+
 getInDom();
 totalQte();
 totalPrice();
@@ -94,7 +96,6 @@ function totalQte(){
 
     //création total quantité
     let totalQte = document.getElementById('totalQuantity');
-    let quantityTotal = document.querySelectorAll('.itemQuantity');
     let qte = 0;
     //additionne chaque valeur présente dans une div ayant pour class 'itemQuantity
     quantityTotal.forEach(e => {qte += Number(e.value);} )
@@ -105,7 +106,6 @@ function totalQte(){
 function totalPrice() {
 
     let totalPrice = document.getElementById('totalPrice');
-    let quantityTotal = document.querySelectorAll('.itemQuantity');
     let price = 0;
 
     //additionne chaque quantité par son prix
@@ -116,6 +116,7 @@ function totalPrice() {
     return totalPrice.innerText = price;
 }
         
+function changeQte(){
 
 
-    
+}
