@@ -120,3 +120,85 @@ function changeQte(){
 
 
 }
+
+
+// FORMULAIRE
+
+function regex(){
+
+    //création des variables et regex
+    let error = "Données incorrectes";
+    let form = document.querySelector(".cart__order__form");
+
+    let nameRegex = new RegExp ("^[a-z ,.'-]+$");
+    let emailRegex = new RegExp ('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$');
+    let adressRegex = new RegExp ("^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$");
+
+    //Ecoute des événements 
+    //Firstname
+    form.firstName.addEventListener('change', function() {
+        const firstName = function(inputFirstName) {
+    
+            if (nameRegex.test(inputFirstName.value)) {
+                (document.getElementById('firstNameErrorMsg')).innerHTML = '';
+            } else {
+                (document.getElementById('firstNameErrorMsg')).innerHTML = error;
+            }
+        };
+        firstName(this);
+    });
+
+    //LastName
+    form.lastName.addEventListener('change', function() {
+        const lastName = function(inputLastName) {
+    
+            if (nameRegex.test(inputLastName.value)) {
+                (document.getElementById('lastNameErrorMsg')).innerHTML = '';
+            } else {
+                (document.getElementById('lastNameErrorMsg')).innerHTML = error;
+            }
+        };
+        lastName(this);
+    });
+
+    //Address
+    form.address.addEventListener('change', function() {
+        const address = function(inputAddress) {
+    
+            if (adressRegex.test(inputAddress.value)) {
+                (document.getElementById('addressErrorMsg')).innerHTML = '';
+            } else {
+                (document.getElementById('addressErrorMsg')).innerHTML = error;
+            }
+        };
+        address(this);
+    });
+
+    //City
+    form.city.addEventListener('change', function() {
+        const city = function(inputCity) {
+    
+            if (adressRegex.test(inputCity.value)) {
+                (document.getElementById('cityErrorMsg')).innerHTML = '';
+            } else {
+                (document.getElementById('cityErrorMsg')).innerHTML = error;
+            }
+        };
+        city(this);
+    });
+
+    //City
+    form.email.addEventListener('change', function() {
+        const email = function(inputEmail) {
+    
+            if (emailRegex.test(inputEmail.value)) {
+                (document.getElementById('emailErrorMsg')).innerHTML = '';
+            } else {
+                (document.getElementById('emailErrorMsg')).innerHTML = error;
+            }
+        };
+        email(this);
+    });
+}
+
+regex();
