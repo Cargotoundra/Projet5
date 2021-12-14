@@ -5,6 +5,7 @@ console.table(viewCart);
 getInDom();
 totalQte();
 totalPrice();
+regex();
 
 function getInDom(){
     for (let article in viewCart){
@@ -201,4 +202,51 @@ function regex(){
     });
 }
 
-regex();
+function clickPost(){
+
+    const postBtn = document.getElementById('order');
+    postBtn.addEventListener('click', post);
+}
+post();
+
+function post(){
+
+    //Récupération des infos client
+    let contact = {
+        name : (document.getElementById('firstName')).value,
+        lastName : (document.getElementById('lastName')).value,
+        address : (document.getElementById('address')).value,
+        city : (document.getElementById('city')).value,
+        mail : (document.getElementById('email')).value
+    }
+
+    //création du tableau dans le local storage
+    let articles = [];
+    for (let i=0; i<viewCart.length; i++){
+        articles.push(viewCart[i].idArticle);
+    }
+    console.log(articles);
+
+    // intégration des IdArticle dans le tableau articles 
+    viewCart.forEach(order => {
+        articles.push(order.id)
+        });
+
+    //envoi des données via API
+    fetch('http://localhost:3000/api/products/order',{
+            method: "POST",
+            body: JSON.stringify({contact, articles}),
+            headers: {
+                'Accept': 'application/json', 
+                "Content-Type": "application/json" 
+            },})
+            .then((res) => res.json())
+            .then((data)=>{
+                console.log(data);
+            window.location.href =`confirmation.html?orderId=${data.orderId}`;
+            })
+            .catch((err)=>{
+                alert(err);
+            })
+    console.table(viewCart);
+};
