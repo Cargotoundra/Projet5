@@ -188,7 +188,7 @@ function regex(){
         city(this);
     });
 
-    //City
+    //email
     form.email.addEventListener('change', function() {
         const email = function(inputEmail) {
     
@@ -205,48 +205,50 @@ function regex(){
 function clickPost(){
 
     const postBtn = document.getElementById('order');
-    postBtn.addEventListener('click', post);
-}
-post();
+    postBtn.addEventListener('click', (event)=>{
 
-function post(){
+    event.preventDefault();
 
     //Récupération des infos client
     let contact = {
-        name : (document.getElementById('firstName')).value,
+        firstName : (document.getElementById('firstName')).value,
         lastName : (document.getElementById('lastName')).value,
         address : (document.getElementById('address')).value,
         city : (document.getElementById('city')).value,
-        mail : (document.getElementById('email')).value
+        email : (document.getElementById('email')).value,
     }
+    console.table(contact);
 
     //création du tableau dans le local storage
-    let articles = [];
-    for (let i=0; i<viewCart.length; i++){
-        articles.push(viewCart[i].idArticle);
-    }
-    console.log(articles);
-
-    // intégration des IdArticle dans le tableau articles 
+    let produits = [];
     viewCart.forEach(order => {
-        articles.push(order.id)
+        produits.push(order.idArticle)
         });
+    console.log(produits);
+
+    const articleOrder = {contact , produits};
+    console.log(articleOrder);
 
     //envoi des données via API
     fetch('http://localhost:3000/api/products/order',{
             method: "POST",
-            body: JSON.stringify({contact, articles}),
+            body: JSON.stringify(articleOrder),
             headers: {
                 'Accept': 'application/json', 
                 "Content-Type": "application/json" 
             },})
-            .then((res) => res.json())
+            .then((res) => {
+                return res.json()})
             .then((data)=>{
                 console.log(data);
-            window.location.href =`confirmation.html?orderId=${data.orderId}`;
+                localStorage.clear();
+                localStorage.setItem("orderId", data.orderId);
+                console.log(localStorage);
+                document.location.href =`confirmation.html`;
             })
             .catch((err)=>{
                 alert(err);
-            })
-    console.table(viewCart);
-};
+            });
+        })}
+
+clickPost();
