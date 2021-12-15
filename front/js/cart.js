@@ -248,6 +248,14 @@ function clickPost(){
     }
     console.table(contact);
 
+    //vérification du remplissage du formulaire
+    if (firstName.value === ""|| lastName.value === ""|| address.value === "" || city.value === "" || email.value === "") {
+        window.confirm("Veuillez renseigner les champs manquants")
+        // la page ne se réactualise pas 
+        window.onbeforeunload;
+   
+    //si ok
+    }else{
     //création du tableau dans le local storage
     let products = [];
     viewCart.forEach(order => {
@@ -274,12 +282,15 @@ function clickPost(){
             //on récupère l'orderId données par l'API
             .then((data)=>{
                 console.log(data);
+                //Mise à zéro du localstorage
+                //viewCart.clear();
                 //redirection vers la page confirmation avec l'ID dans l'URL
                 document.location.href =`confirmation.html?orderId=${data.orderId}`;
             })
             .catch((err)=>{
                 alert(err);
             });
-        })}
+        }})
+}
 
 clickPost();
