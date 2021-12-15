@@ -2,6 +2,7 @@
 var viewCart = JSON.parse(localStorage.getItem("article"));
 console.table(viewCart);
 
+
 getInDom();
 totalQte();
 totalPrice();
@@ -89,6 +90,39 @@ function getInDom(){
         divDelete.classList.add('deleteItem');
         divDelete.innerText = 'Supprimer';
 
+        //Changement de la quantité ds le panier
+        //ecoute l'évènement de l'input
+        value.addEventListener("change",(e)=>{
+            e.preventDefault();
+            if (localStorage.getItem('article')) {
+                let newQte = viewCart.findIndex((e=> e.id === article.idArticle && e.color === article.colorArticle))
+                viewCart[newQte].quantityArticle = value.value;
+            }
+            //MAJ du localstorage
+            localStorage.setItem("article",JSON.stringify(viewCart));
+            totalQte();
+            totalPrice();
+        })
+
+        //fonction supprimer
+        //ecoute l'évènement de l'input
+        divDelete.addEventListener("click",(e)=>{
+            e.preventDefault();
+            if (article.idArticle === article.idArticle) {
+            let objIndex = viewCart.indexOf();
+            console.log(objIndex);
+            //Supprime visuellement l'article du panier
+            articleHTML.removeChild(newArticleHTML);
+            //Supprime l'article du localstorage
+            //viewCart.splice((objIndex), 1);
+            console.table(viewCart);
+            }
+            //Mise à jour du local
+            localStorage.setItem("article",JSON.stringify(viewCart));
+            console.table(viewCart);
+            totalQte();
+            totalPrice();
+        })
     }}
 
 function totalQte(){
@@ -115,11 +149,6 @@ function totalPrice() {
     }
     console.log(price);
     return totalPrice.innerText = price;
-}
-        
-function changeQte(){
-
-
 }
 
 
@@ -238,11 +267,14 @@ function clickPost(){
             },
             body: JSON.stringify(articleOrder),
             })
+            //récupération des données
             .then((res) => {
                 return res.json();
             })
+            //on récupère l'orderId données par l'API
             .then((data)=>{
                 console.log(data);
+                //redirection vers la page confirmation avec l'ID dans l'URL
                 document.location.href =`confirmation.html?orderId=${data.orderId}`;
             })
             .catch((err)=>{
