@@ -108,15 +108,14 @@ function getInDom(){
         //ecoute l'évènement de l'input
         divDelete.addEventListener("click",(e)=>{
             e.preventDefault();
-            if (article.idArticle === article.idArticle) {
-            let objIndex = viewCart.indexOf();
-            console.log(objIndex);
+            
+            let articleIndex = viewCart.indexOf();
+            console.log(viewCart);
             //Supprime visuellement l'article du panier
             articleHTML.removeChild(newArticleHTML);
             //Supprime l'article du localstorage
-            //viewCart.splice((objIndex), 1);
+            //viewCart.splice((0), 1);
             console.table(viewCart);
-            }
             //Mise à jour du local
             localStorage.setItem("article",JSON.stringify(viewCart));
             console.table(viewCart);
@@ -258,6 +257,7 @@ function clickPost(){
     }else{
     //création du tableau dans le local storage
     let products = [];
+
     viewCart.forEach(order => {
         products.push(order.idArticle)
         });
@@ -283,7 +283,7 @@ function clickPost(){
             .then((data)=>{
                 console.log(data);
                 //Mise à zéro du localstorage
-                //viewCart.clear();
+                //localStorage.clear();
                 //redirection vers la page confirmation avec l'ID dans l'URL
                 document.location.href =`confirmation.html?orderId=${data.orderId}`;
             })

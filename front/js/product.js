@@ -108,7 +108,7 @@ function addPanier (products){
                             localStorage.setItem("article", JSON.stringify(ourLocalStorage));
                             console.table(ourLocalStorage);
                     }
-                    } else {
-                        console.log('Erreur de quantité');
-                    }}
+        } else {
+            console.log('Erreur de quantité');
+            }}
 
