@@ -220,31 +220,33 @@ function clickPost(){
     console.table(contact);
 
     //création du tableau dans le local storage
-    let produits = [];
+    let products = [];
     viewCart.forEach(order => {
-        produits.push(order.idArticle)
+        products.push(order.idArticle)
         });
-    console.log(produits);
+    console.table(products);
 
-    const articleOrder = {contact , produits};
+    let articleOrder = {contact , products};
     console.log(articleOrder);
 
     //envoi des données via API
     fetch('http://localhost:3000/api/products/order',{
             method: "POST",
-            body: JSON.stringify(articleOrder),
             headers: {
                 'Accept': 'application/json', 
                 "Content-Type": "application/json" 
-            },})
+            },
+            body: JSON.stringify(articleOrder),
+            })
             .then((res) => {
-                return res.json()})
+                return res.json();
+            })
             .then((data)=>{
                 console.log(data);
-                localStorage.clear();
+                /*localStorage.clear();
                 localStorage.setItem("orderId", data.orderId);
                 console.log(localStorage);
-                document.location.href =`confirmation.html`;
+                document.location.href =`confirmation.html`;*/
             })
             .catch((err)=>{
                 alert(err);
