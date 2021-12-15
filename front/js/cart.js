@@ -243,10 +243,7 @@ function clickPost(){
             })
             .then((data)=>{
                 console.log(data);
-                /*localStorage.clear();
-                localStorage.setItem("orderId", data.orderId);
-                console.log(localStorage);
-                document.location.href =`confirmation.html`;*/
+                document.location.href =`confirmation.html?orderId=${data.orderId}`;
             })
             .catch((err)=>{
                 alert(err);

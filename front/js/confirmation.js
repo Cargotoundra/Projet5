@@ -1,8 +1,5 @@
+let idUrl = (new URL(document.location)).searchParams;
+let idConfirmation = idUrl.get('orderId');
+console.log(idConfirmation);
 
-function confirmation(){
-    const idConf = document.getElementById("orderId");
-    idConf.innerText = localStorage.getItem("orderId");
-    console.log(localStorage.getItem("orderId"))
-}
-
-confirmation();
+(document.getElementById('orderId')).innerText = idConfirmation;
