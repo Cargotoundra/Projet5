@@ -17,6 +17,7 @@ function getInDom(){
         articleHTML.appendChild(newArticleHTML);
         newArticleHTML.classList.add('cart__item');
         newArticleHTML.setAttribute('data-id', viewCart[article].idArticle);
+        newArticleHTML.setAttribute('data-color', viewCart[article].colorArticle);
 
         //création de la div
         let div = document.createElement('div');
@@ -90,6 +91,7 @@ function getInDom(){
         divDelete.classList.add('deleteItem');
         divDelete.innerText = 'Supprimer';
 
+
         //Changement de la quantité ds le panier
         //ecoute l'évènement de l'input
         value.addEventListener("change",(e)=>{
@@ -108,14 +110,16 @@ function getInDom(){
         //ecoute l'évènement de l'input
         divDelete.addEventListener("click",(e)=>{
             e.preventDefault();
-            
-            let articleIndex = viewCart.indexOf();
-            console.log(viewCart);
+            if (article.id === article.id){
+            let colorIndex = newArticleHTML.getAttribute('data-color');
+            let idIndex = newArticleHTML.getAttribute('data-id');
+            var indexOfItemToDelete = viewCart.findIndex(i => i.colorArticle === colorIndex && i.idArticle === idIndex);
+            console.log(indexOfItemToDelete);
             //Supprime visuellement l'article du panier
             articleHTML.removeChild(newArticleHTML);
             //Supprime l'article du localstorage
-            //viewCart.splice((0), 1);
-            console.table(viewCart);
+            viewCart.splice(indexOfItemToDelete, 1);
+            console.table(viewCart);};
             //Mise à jour du local
             localStorage.setItem("article",JSON.stringify(viewCart));
             console.table(viewCart);
@@ -141,10 +145,9 @@ function totalPrice() {
     let totalPrice = document.getElementById('totalPrice');
     let quantityTotal = document.querySelectorAll('.itemQuantity');
     let price = 0;
-
     //additionne chaque quantité par son prix
      for (var i = 0; i < (quantityTotal.length); ++i) {
-        price += (quantityTotal[i].valueAsNumber * viewCart[i].priceArticle);
+        price += (quantityTotal[i].valueAsNumber * (viewCart[i].priceArticle));
     }
     console.log(price);
     return totalPrice.innerText = price;
