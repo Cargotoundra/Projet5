@@ -8,7 +8,9 @@ totalQte();
 totalPrice();
 regex();
 
+//Mise en page dans le DOM
 function getInDom(){
+    //pour chaque objet
     for (let article in viewCart){
 
         //création de Article
@@ -92,47 +94,50 @@ function getInDom(){
         divDelete.innerText = 'Supprimer';
 
 
-        //Changement de la quantité ds le panier
+                //Changement de la quantité ds le panier
         //ecoute l'évènement de l'input
         value.addEventListener("change",(e)=>{
             e.preventDefault();
             if (localStorage.getItem('article')) {
                 //je récupère l'Index de l'article sur lequel je suis
                 let newQte = viewCart.findIndex((e=> e.id === article.idArticle && e.color === article.colorArticle))
-                //J'intègre la quantité rentrée dans le DOM dans le localstorage
+                //Je récupère la quantité rentrée dans le DOM pour mettre à jour le localstorage
                 viewCart[newQte].quantityArticle = value.value;
             }
             //MAJ du localstorage
             localStorage.setItem("article",JSON.stringify(viewCart));
+            //On relance les functions pour mettre à jour quantité et prix total
             totalQte();
             totalPrice();
         })
 
-        //fonction supprimer
+                //fonction supprimer
         //ecoute l'évènement de l'input
         divDelete.addEventListener("click",(e)=>{
             e.preventDefault();
             if (article.id === article.id){
             let colorIndex = newArticleHTML.getAttribute('data-color');
             let idIndex = newArticleHTML.getAttribute('data-id');
+            //Récupération de l'index de l'article dans notre localstorage
             var indexOfItemToDelete = viewCart.findIndex(i => i.colorArticle === colorIndex && i.idArticle === idIndex);
             console.log(indexOfItemToDelete);
             //Supprime visuellement l'article du panier
             articleHTML.removeChild(newArticleHTML);
-            //Supprime l'article du localstorage
+            //Supprime l'article du localstorage ayant l'index sur lequel je suis
             viewCart.splice(indexOfItemToDelete, 1);
             console.table(viewCart);};
             //Mise à jour du local
             localStorage.setItem("article",JSON.stringify(viewCart));
             console.table(viewCart);
+            //On relance les functions pour mettre à jour quantité et prix total
             totalQte();
             totalPrice();
         })
     }}
 
+//Calcul la quantité total d'article
 function totalQte(){
 
-    //création total quantité
     let totalQte = document.getElementById('totalQuantity');
     let quantityTotal = document.querySelectorAll('.itemQuantity');
     let qte = 0;
@@ -142,6 +147,7 @@ function totalQte(){
     return totalQte.innerText = qte;
 }
 
+//Calcul  le prix total de notre panier
 function totalPrice() {
 
     let totalPrice = document.getElementById('totalPrice');
@@ -156,8 +162,9 @@ function totalPrice() {
 }
 
 
-// FORMULAIRE
+                // FORMULAIRE
 
+//Mise en place des Regex pour contrôler les champs du formulaire
 function regex(){
 
     //création des variables et regex
@@ -235,6 +242,7 @@ function regex(){
     });
 }
 
+//Au clic sur le btn
 function clickPost(){
 
     const postBtn = document.getElementById('order');
@@ -260,19 +268,19 @@ function clickPost(){
    
     //si ok
     }else{
-    //création du tableau dans le local storage
-    let products = [];
+        //création du tableau dans le local storage
+        let products = [];
 
-    viewCart.forEach(order => {
-        products.push(order.idArticle)
-        });
-    console.table(products);
+        viewCart.forEach(order => {
+            products.push(order.idArticle)
+            });
+        console.table(products);
 
-    let articleOrder = {contact , products};
-    console.log(articleOrder);
+        let articleOrder = {contact , products};
+        console.log(articleOrder);
 
-    //envoi des données via API
-    fetch('http://localhost:3000/api/products/order',{
+        //envoi des données via API
+        fetch('http://localhost:3000/api/products/order',{
             method: "POST",
             headers: {
                 'Accept': 'application/json', 
@@ -288,7 +296,7 @@ function clickPost(){
             .then((data)=>{
                 console.log(data);
                 //Mise à zéro du localstorage
-                //localStorage.clear();
+                localStorage.clear();
                 //redirection vers la page confirmation avec l'ID dans l'URL
                 document.location.href =`confirmation.html?orderId=${data.orderId}`;
             })

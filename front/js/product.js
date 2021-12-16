@@ -67,10 +67,11 @@ function click (products){
     addCart.addEventListener('click', addPanier);
 }
 
+//Ajout du produit au panier
 function addPanier (products){
         //Si la quantité n'est pas égale à 0 alors
         if (quantityAddProduct.value > 0 && quantityAddProduct.value <=100 && colorAddProduct.value !=""){
-                //Création des données à exporter
+                //Création d'un objet à exporter
                 let detailsArticle = {
                     idArticle: id,
                     colorArticle: colorAddProduct.value,
@@ -101,7 +102,7 @@ function addPanier (products){
                             }
                         //Si aucun article ds le panier (étape 1 de base)
                         } else {
-                            //Création d'un tableau de la local storage
+                            //Création d'un tableau dans le localstorage
                             ourLocalStorage =[];
                             ourLocalStorage.push(detailsArticle);
                             //On pousse les données en JSON ds le localstorage en chaine de caractère
