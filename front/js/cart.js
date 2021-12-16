@@ -97,7 +97,9 @@ function getInDom(){
         value.addEventListener("change",(e)=>{
             e.preventDefault();
             if (localStorage.getItem('article')) {
+                //je récupère l'Index de l'article sur lequel je suis
                 let newQte = viewCart.findIndex((e=> e.id === article.idArticle && e.color === article.colorArticle))
+                //J'intègre la quantité rentrée dans le DOM dans le localstorage
                 viewCart[newQte].quantityArticle = value.value;
             }
             //MAJ du localstorage
