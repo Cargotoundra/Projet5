@@ -62,13 +62,13 @@ function getInDom(products){
             }
 
 //Au clic sur le btn
-function click (products){
+function click (){
     const addCart = document.getElementById('addToCart');
     addCart.addEventListener('click', addPanier);
 }
 
 //Ajout du produit au panier
-function addPanier (products){
+function addPanier (){
         //Si la quantité n'est pas égale à 0 alors
         if (quantityAddProduct.value > 0 && quantityAddProduct.value <=100 && colorAddProduct.value !=""){
                 //Création d'un objet à exporter

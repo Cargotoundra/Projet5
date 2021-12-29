@@ -1,7 +1,7 @@
 //On récupère les infos du localstorage
 var viewCart = JSON.parse(localStorage.getItem("article"));
 console.table(viewCart);
-
+let errorTest = false;
 
 getInDom();
 totalQte();
@@ -99,13 +99,16 @@ function getInDom(){
         value.addEventListener("change",(e)=>{
             e.preventDefault();
             if (localStorage.getItem('article')) {
+                let colorIndex = newArticleHTML.getAttribute('data-color');
+                let idIndex = newArticleHTML.getAttribute('data-id');
                 //je récupère l'Index de l'article sur lequel je suis
-                let newQte = viewCart.findIndex((e=> e.id === article.idArticle && e.color === article.colorArticle))
+                let newQte = viewCart.findIndex(i => i.colorArticle === colorIndex && i.idArticle === idIndex)
                 //Je récupère la quantité rentrée dans le DOM pour mettre à jour le localstorage
-                viewCart[newQte].quantityArticle = value.value;
+                viewCart[newQte].quantityArticle = Number(value.value);
             }
             //MAJ du localstorage
             localStorage.setItem("article",JSON.stringify(viewCart));
+            console.table(viewCart);
             //On relance les functions pour mettre à jour quantité et prix total
             totalQte();
             totalPrice();
@@ -116,22 +119,22 @@ function getInDom(){
         divDelete.addEventListener("click",(e)=>{
             e.preventDefault();
             if (article.id === article.id){
-            let colorIndex = newArticleHTML.getAttribute('data-color');
-            let idIndex = newArticleHTML.getAttribute('data-id');
-            //Récupération de l'index de l'article dans notre localstorage
-            var indexOfItemToDelete = viewCart.findIndex(i => i.colorArticle === colorIndex && i.idArticle === idIndex);
-            console.log(indexOfItemToDelete);
-            //Supprime visuellement l'article du panier
-            articleHTML.removeChild(newArticleHTML);
-            //Supprime l'article du localstorage ayant l'index sur lequel je suis
-            viewCart.splice(indexOfItemToDelete, 1);
-            console.table(viewCart);};
-            //Mise à jour du local
-            localStorage.setItem("article",JSON.stringify(viewCart));
-            console.table(viewCart);
-            //On relance les functions pour mettre à jour quantité et prix total
-            totalQte();
-            totalPrice();
+                let colorIndex = newArticleHTML.getAttribute('data-color');
+                let idIndex = newArticleHTML.getAttribute('data-id');
+                //Récupération de l'index de l'article dans notre localstorage
+                let indexOfItemToDelete = viewCart.findIndex(i => i.colorArticle === colorIndex && i.idArticle === idIndex);
+                console.log(indexOfItemToDelete);
+                //Supprime visuellement l'article du panier
+                articleHTML.removeChild(newArticleHTML);
+                //Supprime l'article du localstorage ayant l'index sur lequel je suis
+                viewCart.splice(indexOfItemToDelete, 1);
+                console.table(viewCart);};
+                //Mise à jour du local
+                localStorage.setItem("article",JSON.stringify(viewCart));
+                console.table(viewCart);
+                //On relance les functions pour mettre à jour quantité et prix total
+                totalQte();
+                totalPrice();
         })
     }}
 
@@ -174,6 +177,7 @@ function regex(){
     let nameRegex = new RegExp ("^[a-z ,.'-]+$");
     let emailRegex = new RegExp ('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$');
     let adressRegex = new RegExp ("^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$");
+    
 
     //Ecoute des événements 
     //Firstname
@@ -182,8 +186,10 @@ function regex(){
     
             if (nameRegex.test(inputFirstName.value)) {
                 (document.getElementById('firstNameErrorMsg')).innerHTML = '';
+                errorTest = false; 
             } else {
                 (document.getElementById('firstNameErrorMsg')).innerHTML = error;
+                errorTest = true; 
             }
         };
         firstName(this);
@@ -232,10 +238,12 @@ function regex(){
     form.email.addEventListener('change', function() {
         const email = function(inputEmail) {
     
-            if (emailRegex.test(inputEmail.value)) {
+            if (emailRegex.test(inputEmail.value) == true) {
                 (document.getElementById('emailErrorMsg')).innerHTML = '';
+                errorTest = false; 
             } else {
                 (document.getElementById('emailErrorMsg')).innerHTML = error;
+                errorTest = true; 
             }
         };
         email(this);
@@ -261,49 +269,55 @@ function clickPost(){
     console.table(contact);
 
     //vérification du remplissage du formulaire
-    if (firstName.value === ""|| lastName.value === ""|| address.value === "" || city.value === "" || email.value === "") {
+    if (firstName.value == ""|| lastName.value == ""|| address.value == "" || city.value == "" || email.value == "") {
         window.confirm("Veuillez renseigner les champs manquants")
         // la page ne se réactualise pas 
         window.onbeforeunload;
    
     //si ok
     }else{
-        //création du tableau dans le local storage
-        let products = [];
+            //
+            if(errorTest === false){
+                //création du tableau dans le local storage
+                let products = [];
 
-        viewCart.forEach(order => {
-            products.push(order.idArticle)
-            });
-        console.table(products);
+                viewCart.forEach(order => {
+                    products.push(order.idArticle)
+                    });
+                console.table(products);
 
-        let articleOrder = {contact , products};
-        console.log(articleOrder);
+                let articleOrder = {contact , products};
+                console.log(articleOrder);
 
-        //envoi des données via API
-        fetch('http://localhost:3000/api/products/order',{
-            method: "POST",
-            headers: {
-                'Accept': 'application/json', 
-                "Content-Type": "application/json" 
-            },
-            body: JSON.stringify(articleOrder),
-            })
-            //récupération des données
-            .then((res) => {
-                return res.json();
-            })
-            //on récupère l'orderId données par l'API
-            .then((data)=>{
-                console.log(data);
-                //Mise à zéro du localstorage
-                localStorage.clear();
-                //redirection vers la page confirmation avec l'ID dans l'URL
-                document.location.href =`confirmation.html?orderId=${data.orderId}`;
-            })
-            .catch((err)=>{
-                alert(err);
-            });
-        }})
+                //envoi des données via API
+                fetch('http://localhost:3000/api/products/order',{
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json', 
+                        "Content-Type": "application/json" 
+                    },
+                    body: JSON.stringify(articleOrder),
+                    })
+                    //récupération des données
+                    .then((res) => {
+                        return res.json();
+                    })
+                    //on récupère l'orderId données par l'API
+                    .then((data)=>{
+                        console.log(data);
+                        //Mise à zéro du localstorage
+                        //localStorage.clear();
+                        //redirection vers la page confirmation avec l'ID dans l'URL
+                        document.location.href =`confirmation.html?orderId=${data.orderId}`;
+                    })
+                    .catch((err)=>{
+                        alert(err);
+                    });
+        } else { 
+            //Affichage d'une erreur si champs avec données manquantes
+            window.confirm("Veuillez renseigner les champs manquants");
+        }
+    }})
 }
 
 clickPost();
