@@ -12,7 +12,7 @@ async function showProduct(){
         .then(function (apiResults){
             const products = apiResults;
             console.table(products);
-            //Pour chaque objects du products
+            //Pour chaque product du products
             for (let product in products){
 
                 //Création du <a>

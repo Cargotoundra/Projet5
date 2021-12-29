@@ -9,7 +9,7 @@ const quantityAddProduct = document.getElementById("quantity");
 seeProduct();
 
 
-//Récupération des info du produit ayant l'id = id
+//Récupération des info du produit ayant l'id == id
 function seeProduct() {
     fetch("http://localhost:3000/api/products/" + id)
     .then((res) => {
@@ -64,6 +64,7 @@ function getInDom(products){
 //Au clic sur le btn
 function click (){
     const addCart = document.getElementById('addToCart');
+    //au clic on lance la fonction addPanier
     addCart.addEventListener('click', addPanier);
 }
 
@@ -84,7 +85,7 @@ function addPanier (){
                 };
                 //Création espace de stockage
                 let ourLocalStorage = JSON.parse(localStorage.getItem("article"));
-
+                    
                     if (ourLocalStorage){
                         const cartNotEmpty = ourLocalStorage.find((article) => article.idArticle === id && article.colorArticle === (colorAddProduct.value));
                             //Si l'article ds le panier == nouvel article alors on change juste la quantité

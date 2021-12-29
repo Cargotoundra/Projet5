@@ -1,6 +1,7 @@
 //On récupère les infos du localstorage
 var viewCart = JSON.parse(localStorage.getItem("article"));
 console.table(viewCart);
+
 let errorTest = false;
 
 getInDom();
@@ -10,7 +11,7 @@ regex();
 
 //Mise en page dans le DOM
 function getInDom(){
-    //pour chaque objet
+    //pour chaque article dans notre localstorage
     for (let article in viewCart){
 
         //création de Article
@@ -124,21 +125,22 @@ function getInDom(){
                 //Récupération de l'index de l'article dans notre localstorage
                 let indexOfItemToDelete = viewCart.findIndex(i => i.colorArticle === colorIndex && i.idArticle === idIndex);
                 console.log(indexOfItemToDelete);
-                //Supprime visuellement l'article du panier
+                //Supprime visuellement l'article du DOM
                 articleHTML.removeChild(newArticleHTML);
                 //Supprime l'article du localstorage ayant l'index sur lequel je suis
                 viewCart.splice(indexOfItemToDelete, 1);
-                console.table(viewCart);};
-                //Mise à jour du local
-                localStorage.setItem("article",JSON.stringify(viewCart));
                 console.table(viewCart);
-                //On relance les functions pour mettre à jour quantité et prix total
-                totalQte();
-                totalPrice();
+            };
+            //Mise à jour du local
+            localStorage.setItem("article",JSON.stringify(viewCart));
+            console.table(viewCart);
+            //On relance les functions pour mettre à jour quantité et prix total
+            totalQte();
+            totalPrice();
         })
     }}
 
-//Calcul la quantité total d'article
+//Calcul la quantité totale d'article
 function totalQte(){
 
     let totalQte = document.getElementById('totalQuantity');
@@ -150,7 +152,7 @@ function totalQte(){
     return totalQte.innerText = qte;
 }
 
-//Calcul  le prix total de notre panier
+//Calcul le prix total de notre panier
 function totalPrice() {
 
     let totalPrice = document.getElementById('totalPrice');
@@ -201,8 +203,10 @@ function regex(){
     
             if (nameRegex.test(inputLastName.value)) {
                 (document.getElementById('lastNameErrorMsg')).innerHTML = '';
+                errorTest = false; 
             } else {
                 (document.getElementById('lastNameErrorMsg')).innerHTML = error;
+                errorTest = true; 
             }
         };
         lastName(this);
@@ -214,8 +218,10 @@ function regex(){
     
             if (adressRegex.test(inputAddress.value)) {
                 (document.getElementById('addressErrorMsg')).innerHTML = '';
+                errorTest = false; 
             } else {
                 (document.getElementById('addressErrorMsg')).innerHTML = error;
+                errorTest = true; 
             }
         };
         address(this);
@@ -227,8 +233,10 @@ function regex(){
     
             if (adressRegex.test(inputCity.value)) {
                 (document.getElementById('cityErrorMsg')).innerHTML = '';
+                errorTest = false; 
             } else {
                 (document.getElementById('cityErrorMsg')).innerHTML = error;
+                errorTest = true; 
             }
         };
         city(this);
@@ -306,7 +314,7 @@ function clickPost(){
                     .then((data)=>{
                         console.log(data);
                         //Mise à zéro du localstorage
-                        //localStorage.clear();
+                        localStorage.clear();
                         //redirection vers la page confirmation avec l'ID dans l'URL
                         document.location.href =`confirmation.html?orderId=${data.orderId}`;
                     })
@@ -314,8 +322,8 @@ function clickPost(){
                         alert(err);
                     });
         } else { 
-            //Affichage d'une erreur si champs avec données manquantes
-            window.confirm("Veuillez renseigner les champs manquants");
+            //Affichage d'une erreur si champs avec mauvaises données 
+            window.confirm("Erreur de saisie sur le formulaire");
         }
     }})
 }
